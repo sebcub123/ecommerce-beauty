@@ -1,16 +1,18 @@
-import React from "react";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-const Item = ({title}) => {
-    return (
-        <div className="card" style={{width: '18rem'}}>
-            <img src="https://res.cloudinary.com/dml2fdgug/image/upload/v1671589327/react/serumbekim_wndclk.jpg" className="card-img-top" alt="..."/>
-                <div className="card-body">
-                    <h5 className="card-title">{title}</h5>
-                    <p className="card-text">Descripcion general del producto.</p>
-                    <a href="/#" className="btn btn-primary">Agregar al Carrito</a>
-                </div>
-        </div>
-    )
+
+const Item = ({product}) => {
+  return (
+    <div className="card" style={{width: '18rem'}}>
+      <img src={product.image} className="card-img-top" alt={`id-${product.id}`}/>
+      <div className="card-body">
+        <h5 className="card-title">{product.title}</h5>
+        <p className="card-text">{product.price}</p>
+        <Link to={`/detail/${product.id}`} className="btn btn-primary">Ver detalle</Link>
+      </div>
+    </div>
+  )
 }
 
 export default Item

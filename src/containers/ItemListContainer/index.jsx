@@ -1,20 +1,47 @@
-import React from "react";
-import Item from "../../componentes/Item";
-import './styles.scss';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import ItemList from '../../componentes/ItemList';
+import productJson from '../../data/products.json';
 
-const ItemListContainer = () => {
-    return (
-        <div className="ItemListContainer">
-            <Item title={'Titulo Producto 1'}/>
-            <Item title={'Titulo Producto 2'}/>
-            <Item title={'Titulo Producto 3'}/>
-            <Item title={'Titulo Producto 4'}/>
-            <Item title={'Titulo Producto 5'}/>
-            <Item title={'Titulo Producto 6'}/>
-            <Item title={'Titulo Producto 7'}/>
-            <Item title={'Titulo Producto 8'}/>
-        </div>
-    )
+const ItemListContainer = ({greeting}) => {
+
+  const [products, setProducts] = useState([])
+
+  const {categoryId}  = useParams()
+  
+  useEffect(()=> {
+
+    //Caso JSON propio
+    const getProducts = () => {
+
+      const obtenerProductos = new Promise((res, rej) => {
+        setTimeout(()=> {
+          res(productJson)
+        }, 3000)
+      })
+
+      obtenerProductos
+      .then( productos => {
+        if (categoryId) { 
+          const productosFiltradosPorCategoria = productos.filter(producto => producto.category === categoryId) 
+          setProducts(productosFiltradosPorCategoria) 
+        } else { 
+          setProducts(productos) 
+        }
+      })
+      .catch(error => console.log(error))
+    }
+
+    getProducts()
+
+  }, [categoryId])
+
+
+  return (
+    <div>
+        <ItemList productos={products}/>
+    </div>
+  )
 }
 
 export default ItemListContainer
